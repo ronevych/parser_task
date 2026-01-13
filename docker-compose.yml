@@ -1,0 +1,74 @@
+services:
+  # 1. DATABASE
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env
+    environment:
+      # Мапинг твоїх змінних з .env у змінні, які очікує Postgres Image
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. REDIS (Broker)
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  # 3. WEB (Django)
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app  # Hot-reload: зміни на комп'ютері відобразяться в контейнері
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ='Europe/Kyiv'
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy # Чекаємо поки БД реально запуститься
+      redis:
+        condition: service_started
+
+  # 4. CELERY WORKER
+  worker:
+    build: .
+    command: celery -A config worker --loglevel=info
+    volumes:
+      - ./app:/app
+    environment:
+      - TZ='Europe/Kyiv'
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  # 5. CELERY BEAT
+  beat:
+    build: .
+    command: celery -A config beat --loglevel=info
+    volumes:
+      - ./app:/app
+    environment:
+      - TZ='Europe/Kyiv'  
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_data:
