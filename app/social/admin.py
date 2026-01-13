@@ -1,5 +1,7 @@
 from django.contrib import admin
-from social.models import SocialUser, Post
+
+from social.models import Post, SocialUser
+
 
 @admin.register(SocialUser)
 class SocialUserAdmin(admin.ModelAdmin):
@@ -8,6 +10,7 @@ class SocialUserAdmin(admin.ModelAdmin):
     search_fields = ("username", "email", "name")
     list_filter = ("created_at",)
     readonly_fields = ("created_at", "updated_at")
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -20,10 +23,12 @@ class PostAdmin(admin.ModelAdmin):
     # Кастомний метод для скорочення заголовка
     def title_short(self, obj):
         return obj.title[:50] + "..." if len(obj.title) > 50 else obj.title
+
     title_short.short_description = "Title"
 
     # Кастомний метод для клікабельного посилання на автора
     def author_link(self, obj):
         return obj.author.username
+
     author_link.short_description = "Author"
     author_link.admin_order_field = "author__username"

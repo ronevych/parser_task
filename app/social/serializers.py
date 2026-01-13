@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from social.models import SocialUser, Post, Comment
+
+from social.models import Comment, Post, SocialUser
+
 
 class SocialUserSerializer(serializers.ModelSerializer):
     # Це поле буде заповнене через annotate у ViewSet (оптимізація)
@@ -8,30 +10,32 @@ class SocialUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialUser
         fields = [
-            "id", 
-            "external_id", 
-            "username", 
-            "email", 
-            "name", 
-            "posts_count", 
-            "created_at"
+            "id",
+            "external_id",
+            "username",
+            "email",
+            "name",
+            "posts_count",
+            "created_at",
         ]
+
 
 class PostSerializer(serializers.ModelSerializer):
     # Nested Serializer: замість простого ID (1), ми покажемо об'єкт юзера.
-    # read_only=True, бо ми тільки читаємо дані, а не створюємо пости через API.
+    # read_only=True, бо ми тільки читаємо дані.
     author = SocialUserSerializer(read_only=True)
 
     class Meta:
         model = Post
         fields = [
-            "id", 
-            "external_id", 
-            "title", 
-            "body", 
+            "id",
+            "external_id",
+            "title",
+            "body",
             "author",  # Тепер тут буде повна інфа про автора
-            "created_at"
+            "created_at",
         ]
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

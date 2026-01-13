@@ -1,8 +1,10 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from social.services import fetch_users, fetch_posts, fetch_comments
+
+from social.services import fetch_comments, fetch_posts, fetch_users
 
 logger = get_task_logger(__name__)
+
 
 @shared_task
 def sync_users_task():
@@ -13,6 +15,7 @@ def sync_users_task():
     fetch_users()
     logger.info("Task sync_users_task finished.")
 
+
 @shared_task
 def sync_posts_task():
     """
@@ -22,6 +25,7 @@ def sync_posts_task():
     fetch_posts()
     logger.info("Task sync_posts_task finished.")
 
+
 @shared_task
 def sync_comments_task():
     """
@@ -30,6 +34,7 @@ def sync_comments_task():
     logger.info("Task sync_comments_task started.")
     fetch_comments()
     logger.info("Task sync_comments_task finished.")
+
 
 @shared_task
 def sync_full_flow_task():
