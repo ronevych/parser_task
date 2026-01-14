@@ -1,8 +1,8 @@
-# Social Parser System 🚀
+# Social Parser System 
 
 A robust ETL system built with Django, Celery, and Docker. It parses Users, Posts, and Comments from external APIs (JSONPlaceholder, DummyJSON), stores them in a normalized PostgreSQL database, and provides a REST API to view the data.
 
-## 🛠 Tech Stack
+## Tech Stack
 
 * **Core:** Python 3.12, Django 6.0
 * **API:** Django REST Framework (DRF), Drf-Spectacular (Swagger)
@@ -11,7 +11,7 @@ A robust ETL system built with Django, Celery, and Docker. It parses Users, Post
 * **Infrastructure:** Docker, Docker Compose
 * **QA:** Pytest, Flake8, Black, Isort, Requests-Mock
 
-## ✨ Features
+## Features
 
 * **Microservices Architecture:** Fully dockerized environment.
 * **Smart ETL Strategy:**
@@ -21,7 +21,7 @@ A robust ETL system built with Django, Celery, and Docker. It parses Users, Post
 * **Automated Scheduling:** Periodic tasks run automatically via Celery Beat.
 * **REST API:** Fully documented endpoints with filtering, searching, and pagination.
 
-## 🚀 How to Run
+## How to Run
 
 1.  **Clone the repository:**
     ```bash
@@ -49,7 +49,7 @@ A robust ETL system built with Django, Celery, and Docker. It parses Users, Post
     * **Swagger UI (API Docs):** [http://127.0.0.1:8000/api/schema/swagger-ui/](http://127.0.0.1:8000/api/schema/swagger-ui/)
     * **Admin Panel:** [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
-## 🧪 Running Tests & Quality Checks
+## Running Tests & Quality Checks
 
 Run all tests inside the docker container:
 
