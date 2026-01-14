@@ -26,7 +26,7 @@ A robust ETL system built with Django, Celery, and Docker. It parses Users, Post
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/ronevych/parser_task.git
-    cd parser_system
+    cd parser_task
     ```
 
 2.  **Create `.env` file:**
