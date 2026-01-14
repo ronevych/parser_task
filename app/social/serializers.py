@@ -4,7 +4,6 @@ from social.models import Comment, Post, SocialUser
 
 
 class SocialUserSerializer(serializers.ModelSerializer):
-    # Це поле буде заповнене через annotate у ViewSet (оптимізація)
     posts_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -21,8 +20,6 @@ class SocialUserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    # Nested Serializer: замість простого ID (1), ми покажемо об'єкт юзера.
-    # read_only=True, бо ми тільки читаємо дані.
     author = SocialUserSerializer(read_only=True)
 
     class Meta:
@@ -32,7 +29,7 @@ class PostSerializer(serializers.ModelSerializer):
             "external_id",
             "title",
             "body",
-            "author",  # Тепер тут буде повна інфа про автора
+            "author",
             "created_at",
         ]
 

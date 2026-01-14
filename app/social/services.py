@@ -32,8 +32,6 @@ def fetch_users():
                         "name": user_item["name"],
                     },
                 )
-                # action = "Created" if created else "Updated"
-                # logger.debug(f"{action} user: {user.username}")
 
         logger.info(f"Successfully processed {len(users_data)} users.")
 
@@ -52,12 +50,8 @@ def fetch_posts():
     try:
         response = requests.get(POST_API_URL, params={"limit": 0}, timeout=10)
         response.raise_for_status()
-        # API dummyjson повертає dict: {"posts": [...], "total": ...}
         posts_data = response.json().get("posts", [])
 
-        # ОПТИМІЗАЦІЯ:
-        # Замість 100 запитів до БД в циклі, робимо 1 запит.
-        # Створюємо мапу: {external_id: SocialUser object}
         existing_users = {user.external_id: user for user in SocialUser.objects.all()}
 
         created_count = 0
@@ -98,8 +92,6 @@ def fetch_comments():
     """
     logger.info("Starting to fetch comments...")
 
-    # 1. Отримуємо список постів, які вже є в БД
-    # Використовуємо iterator(), щоб не забивати пам'ять, якщо постів тисячі
     posts = Post.objects.all().iterator()
 
     total_created = 0

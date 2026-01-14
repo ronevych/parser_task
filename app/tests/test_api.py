@@ -6,7 +6,7 @@ from social.models import Comment, Post, SocialUser
 @pytest.mark.django_db
 def test_get_users_list(api_client):
     """
-    Перевіряємо список юзерів.
+    User List Check.
     """
     SocialUser.objects.create(external_id=1, username="u1", email="u1@test.com")
     SocialUser.objects.create(external_id=2, username="u2", email="u2@test.com")
@@ -20,7 +20,7 @@ def test_get_users_list(api_client):
 @pytest.mark.django_db
 def test_posts_list_structure(api_client):
     """
-    Перевіряємо структуру поста (Nested Author).
+    Post Structure Check
     """
     u = SocialUser.objects.create(external_id=1, username="author_x", email="x@x.com")
     Post.objects.create(external_id=10, title="My Title", author=u)
@@ -35,7 +35,7 @@ def test_posts_list_structure(api_client):
 @pytest.mark.django_db
 def test_comments_filtering(api_client):
     """
-    Перевіряємо фільтрацію коментарів по post_id.
+    Checking filter of Comments by post_id
     """
     u = SocialUser.objects.create(external_id=1, username="u", email="e")
     p1 = Post.objects.create(external_id=10, title="P1", author=u)

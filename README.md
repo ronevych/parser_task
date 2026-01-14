@@ -40,7 +40,12 @@ A robust ETL system built with Django, Celery, and Docker. It parses Users, Post
     docker-compose up -d --build
     ```
 
-4.  **Access the Application:**
+4.  **Make Migrations:**
+    ```bash
+    docker-compose exec web python manage.py migrate
+    ```
+
+5.  **Access the Application:**
     * **Swagger UI (API Docs):** [http://127.0.0.1:8000/api/schema/swagger-ui/](http://127.0.0.1:8000/api/schema/swagger-ui/)
     * **Admin Panel:** [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 

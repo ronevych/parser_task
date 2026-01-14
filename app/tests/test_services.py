@@ -1,8 +1,6 @@
 import pytest
 
 from social.models import Comment, Post, SocialUser
-
-# import requests
 from social.services import fetch_comments, fetch_posts, fetch_users
 
 
@@ -35,8 +33,8 @@ def test_fetch_users_success(requests_mock):
 @pytest.mark.django_db
 def test_fetch_posts_strict_consistency(requests_mock):
     """
-    CRITICAL: Перевіряємо Strict Mode.
-    Пости невідомих авторів (яких немає в БД) мають ігноруватися.
+    Strict Mode Check
+    If No Author in DB, then Post being ignored
     """
     user = SocialUser.objects.create(
         external_id=10, username="our_user", email="me@test.com"
@@ -61,8 +59,7 @@ def test_fetch_posts_strict_consistency(requests_mock):
 @pytest.mark.django_db
 def test_fetch_comments_smart_parsing(requests_mock):
     """
-    CRITICAL: Smart Parsing.
-    Перевіряємо, що коментарі тягнуться ТІЛЬКИ для існуючих постів.
+    Checking if comments being fetched only for existent posts.
     """
     user = SocialUser.objects.create(external_id=1, username="u", email="e")
     post = Post.objects.create(external_id=55, title="Test Post", author=user)

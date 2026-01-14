@@ -139,16 +139,12 @@ CELERY_RESULT_BACKEND = env.REDIS_URL
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-# Часовий пояс для планувальника
 CELERY_TIMEZONE = "Europe/Kyiv"
 
 CELERY_BEAT_SCHEDULE = {
     "sync-full-flow-every-5-minutes": {
         "task": "social.tasks.sync_full_flow_task",
-        "schedule": crontab(
-            minute="*/5"
-        ),  # Тут використовую crontab, для привʼязки до годинника.
-        # "schedule": 30.0,
+        "schedule": crontab(minute="*/5"),
     },
 }
 

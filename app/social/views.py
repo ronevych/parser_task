@@ -20,7 +20,6 @@ class SocialUserViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = SocialUserSerializer
     pagination_class = StandardResultsSetPagination
-    # Підключаємо фільтри та пошук
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -30,8 +29,6 @@ class SocialUserViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ["created_at", "username"]
 
     def get_queryset(self):
-        # ОПТИМІЗАЦІЯ: annotate додає колонку posts_count прямо в SQL запит.
-        # Це дозволяє серіалізатору не робити зайвих запитів.
         return SocialUser.objects.annotate(posts_count=Count("posts")).order_by("-id")
 
 
@@ -48,15 +45,11 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
         filters.OrderingFilter,
     ]
 
-    # Фільтрація по exact match (наприклад ?author=1)
     filterset_fields = ["author", "external_id"]
-    # Пошук по тексту (ILIKE)
     search_fields = ["title", "body"]
     ordering_fields = ["created_at", "title"]
 
     def get_queryset(self):
-        # ОПТИМІЗАЦІЯ: select_related('author') робить SQL JOIN.
-        # Ми отримуємо дані поста та автора за ОДИН запит.
         return Post.objects.select_related("author").all().order_by("-id")
 
 
@@ -71,6 +64,5 @@ class CommentViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
 
-    # Фільтрація: /api/comments/?post=10
     filterset_fields = ["post", "post__external_id"]
     ordering_fields = ["created_at"]
